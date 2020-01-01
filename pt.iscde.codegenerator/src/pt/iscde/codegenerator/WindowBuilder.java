@@ -62,11 +62,12 @@ public class WindowBuilder {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectedFields.clear();
-				for(Control c : buttons.getChildren()) {
-					Button b = (Button) c;
-					if(b.getSelection()) {
-						selectedFields.add(b.getText());
-						System.out.println("adicionei " + b.getText());
+				
+				for(Control control : buttons.getChildren()) {
+					Button button = (Button) control;
+					
+					if(button.getSelection()) {
+						selectedFields.add(button.getText());
 					}
 				}
 				

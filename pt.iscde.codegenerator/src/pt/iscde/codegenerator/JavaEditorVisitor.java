@@ -9,6 +9,7 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 public class JavaEditorVisitor extends ASTVisitor{
 
 	private ArrayList<FieldDeclaration> fields = new ArrayList<>();
+	ArrayList<String> fieldNames = new ArrayList<String>();
 	private ArrayList<MethodDeclaration> methods = new ArrayList<>();
 	ArrayList<String> methodNames = new ArrayList<String>();
 	
@@ -31,13 +32,27 @@ public class JavaEditorVisitor extends ASTVisitor{
 	public ArrayList<MethodDeclaration> getMethods(){
 		return methods;
 	}
+	
+	
+	public ArrayList<String> getFieldNames() {
+		fieldNames.clear();
+		
+		for(FieldDeclaration f: fields) {
+			fieldNames.add(f.toString());
+		}
+		
+		fields.clear();
+		return fieldNames;
+	}
 
 	public ArrayList<String> getMethodNames() {
 		methodNames.clear();
+		
 		for(MethodDeclaration m: methods) {
 			methodNames.add(m.getName().toString());
-			System.out.println("Method name : " + m.toString());
 		}
+		
+		methods.clear();
 		return methodNames;
 	}
 }

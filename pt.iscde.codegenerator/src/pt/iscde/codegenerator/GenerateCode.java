@@ -33,7 +33,7 @@ public class GenerateCode {
 				fieldType = s.split(" ")[0];
 
 				getCode = getGetterCode(fieldName, fieldType);
-				setCode = "\tpublic void set" + fieldName + "() { \n \t\tthis."+ fieldName + " = " + fieldName + "; \n \t}";
+//				setCode = "\tpublic void set" + fieldName + "() { \n \t\tthis."+ fieldName + " = " + fieldName + "; \n \t}";
 
 				javaEditor.insertTextAtCursor(getCode);
 				javaEditor.saveFile(file);
