@@ -32,10 +32,10 @@ public class GenerateCode {
 				fieldName = s.split(" ")[1];
 				fieldType = s.split(" ")[0];
 
-				getCode = getGetterCode(fieldName, fieldType);
-//				setCode = "\tpublic void set" + fieldName + "() { \n \t\tthis."+ fieldName + " = " + fieldName + "; \n \t}";
+				getCode = getterCode(fieldName, fieldType);
+				setCode = setterCode(fieldName, fieldType);
 
-				javaEditor.insertTextAtCursor(getCode);
+				javaEditor.insertTextAtCursor(getCode + setCode );
 				javaEditor.saveFile(file);
 			}
 		} else {
@@ -44,10 +44,17 @@ public class GenerateCode {
 
 	}
 	
-	private String getGetterCode(String fieldName, String fieldType) {
+	private String getterCode(String fieldName, String fieldType) {
 		String methodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 		if(!visitor.getMethodNames().contains(methodName))
-			return "\tpublic " + fieldType + " " + methodName + "() { \n \t\treturn this."+ fieldName + "; \n \t}";
+			return "public " + fieldType + " " + methodName + "() { \n \t\treturn this."+ fieldName + "; \n \t}\n\n";
+		return "";
+	}
+	
+	private String setterCode(String fieldName, String fieldType) {
+		String methodName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+		if(!visitor.getMethodNames().contains(methodName))
+			return "\tpublic void " + methodName + "(" + fieldType + " " + fieldName +") { \n \t\tthis."+ fieldName + " = " + fieldName + "; \n \t}\n\n";
 		return "";
 	}
 }
