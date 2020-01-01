@@ -31,6 +31,7 @@ public class CodeGeneratorView implements PidescoView {
 		viewArea.setLayout(new RowLayout(SWT.VERTICAL));
 
 		buttonGenerator.addGettersSetters("Add Getters/Setters", viewArea, javaEditor);
+		buttonGenerator.surroundWithTryCatch("Surround with Try/Catch", viewArea, javaEditor);
 
 	}
 

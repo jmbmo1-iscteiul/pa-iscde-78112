@@ -21,14 +21,16 @@ public class WindowBuilder {
 	private final static int SHELL_WIDTH = 350;
 
 	private Multimap<String, String> map;
-	ArrayList<String> selectedFields;
+	private ArrayList<String> selectedFields;
+	private GenerateCode generateCode;
 
 
-	public WindowBuilder() {
+	public WindowBuilder(GenerateCode generateCode) {
 			this.selectedFields = new ArrayList<String>();
+			this.generateCode = generateCode;
 	}
 
-	public void addGettersSetters(Composite viewArea, Multimap<String, String> map, GenerateCode generateCode) {
+	public void addGettersSetters(Composite viewArea, Multimap<String, String> map) {
 		ArrayList<String> selectedFields = new ArrayList<String>();
 
 		Shell shell = new Shell();
