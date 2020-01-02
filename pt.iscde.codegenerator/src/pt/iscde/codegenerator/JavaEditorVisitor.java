@@ -22,6 +22,7 @@ public class JavaEditorVisitor extends ASTVisitor{
 	@Override
 	public boolean visit(MethodDeclaration method) {
 		methods.add(method);
+//		System.out.println(method.getName().toString());
 		return false;
 	}
 	
@@ -32,7 +33,6 @@ public class JavaEditorVisitor extends ASTVisitor{
 	public ArrayList<MethodDeclaration> getMethods(){
 		return methods;
 	}
-	
 	
 	public ArrayList<String> getFieldNames() {
 		fieldNames.clear();
