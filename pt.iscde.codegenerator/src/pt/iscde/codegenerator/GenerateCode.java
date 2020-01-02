@@ -42,6 +42,7 @@ public class GenerateCode {
 		}
 	}
 	
+	
 	private String getterSettersCode(ArrayList<String> methodNames, String fieldName, String fieldType) {
 		String getMethodCode = "", setMethodCode = "";
 		String getMethodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
