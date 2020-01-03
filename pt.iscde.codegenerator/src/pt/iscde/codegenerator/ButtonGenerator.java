@@ -71,7 +71,10 @@ public class ButtonGenerator {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				
-				generateCode.surroundWithTryCatch();
+				File file = javaEditor.getOpenedFile();
+				ITextSelection textSelected = javaEditor.getTextSelected(file);
+				
+				generateCode.surroundWithTryCatch(textSelected);
 
 			}
 
