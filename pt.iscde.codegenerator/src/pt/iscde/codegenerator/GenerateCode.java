@@ -3,6 +3,7 @@ package pt.iscde.codegenerator;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.swt.widgets.Composite;
 
 import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
@@ -12,7 +13,6 @@ public class GenerateCode {
 	private JavaEditorServices javaEditor;
 	private File file;
 	private JavaEditorVisitor visitor;
-	private Composite viewArea;
 
 	public GenerateCode(JavaEditorServices javaEditor, JavaEditorVisitor visitor) {
 		this.javaEditor = javaEditor;
@@ -56,5 +56,23 @@ public class GenerateCode {
 		}
 		
 		return getMethodCode + setMethodCode;
+	}
+
+
+	public void surroundWithTryCatch() {
+		
+		File file = javaEditor.getOpenedFile();
+		ITextSelection textSelected = javaEditor.getTextSelected(file);
+		
+		String code = "try {\n\t\t" + textSelected.getText().toString() +"\n\t}catch (Exception e) {\n\t\te.printStackTrace();\n\t}";
+		
+		javaEditor.insertText(file, code, textSelected.getOffset(), textSelected.getLength());
+
+	}
+
+
+	public void generateConstructor(ArrayList<String> selectedFields) {
+		// TODO Auto-generated method stub
+		
 	}
 }
