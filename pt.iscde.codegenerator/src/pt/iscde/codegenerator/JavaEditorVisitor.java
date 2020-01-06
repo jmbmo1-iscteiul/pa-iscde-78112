@@ -1,7 +1,6 @@
 package pt.iscde.codegenerator;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
@@ -78,4 +77,6 @@ public class JavaEditorVisitor extends ASTVisitor{
 		fields.clear();
 		methods.clear();
 	}
+
+
 }

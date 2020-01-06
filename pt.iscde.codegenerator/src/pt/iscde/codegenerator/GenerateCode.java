@@ -2,12 +2,9 @@ package pt.iscde.codegenerator;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.jface.text.ITextSelection;
-import org.eclipse.swt.widgets.Composite;
 
-import pt.iscte.pidesco.javaeditor.service.JavaEditorListener;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
 
 public class GenerateCode {
@@ -108,6 +105,46 @@ public class GenerateCode {
 		String code = "try {\n\t\t" + textSelected.getText().toString() +"\n\t}catch (Exception e) {\n\t\te.printStackTrace();\n\t}";
 		javaEditor.insertText(file, code, textSelected.getOffset(), textSelected.getLength());
 	}
+
+	public void generateToString(ArrayList<String> selectedFields) {
+		visitor.clear();
+		file = javaEditor.getOpenedFile();
+		javaEditor.parseFile(file, visitor);
+		String fieldName, className, s1, s2 = "", s3, code, functionCode;
+		boolean exists = false;
+		
+		className = file.getName().replace(".java", "");
+		s1 = "\"" + className + " [";
+		s3 = " + \"]\";";
+		
+		if(!selectedFields.isEmpty()) {
+			for(int i = 0; i < selectedFields.size(); i++) {
+				fieldName = selectedFields.get(i).split(" ")[1];
+				s2 += fieldName + "=\" + " + fieldName;
+				
+				if(i != selectedFields.size() - 1)
+					s2 += " + \", ";
+				
+			}
+			
+			code = s1 + s2 + s3;
+			
+			functionCode = "@Override\n" + "public String toString() {\n\t" + "return " + code + "\n}\n";
+			
+			for(String method: visitor.getMethodNames()) {
+				if(method.equals("toString"))
+					exists = true;
+			}
+			if(!exists)
+				javaEditor.insertTextAtCursor(functionCode);
+				javaEditor.saveFile(file);
+
+		} else {
+			System.out.println("Lista Vazia");
+		}
+
+	}
+
 
 
 }

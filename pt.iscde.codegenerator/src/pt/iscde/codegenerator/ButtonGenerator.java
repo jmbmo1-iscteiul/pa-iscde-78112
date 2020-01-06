@@ -52,7 +52,8 @@ public class ButtonGenerator {
 						map.put(type_name[0], type_name[1].substring(0, type_name[1].length()-2));
 					}
 
-					createGettersSettersInterface(map);
+//					createGettersSettersInterface(map);
+					createInterface(map, "Add Getters and Setters", "Choose attributes to add getters/setters:",2);
 
 				} else {
 					System.out.println("There are no fields");
@@ -103,7 +104,8 @@ public class ButtonGenerator {
 						map.put(type_name[0], type_name[1].substring(0, type_name[1].length()-2));
 					}
 
-					createConstructorInterface(map);
+//					createConstructorInterface(map);
+					createInterface(map, "Generate Constructor Using Fields", "Choose the fields to add into the constructor:",1);
 
 				} else {
 					System.out.println("There are no fields");
@@ -115,6 +117,39 @@ public class ButtonGenerator {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 
+	}
+	
+	public void generateToString(String name) {
+		Button button = new Button(viewArea, SWT.VERTICAL);
+		button.setText(name);
+		button.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				visitor.clear();
+				Multimap<String,String> map = ArrayListMultimap.create();
+				File file = javaEditor.getOpenedFile();
+				javaEditor.parseFile(file, visitor);
+				
+				if(!visitor.getFields().isEmpty()) {
+
+					for(String s: visitor.getFieldNames()) {
+						String[] type_name = s.split(" ");
+
+						map.put(type_name[0], type_name[1].substring(0, type_name[1].length()-2));
+					}
+					
+//					createToStringInterface(map, "Generate To String method", "Choose the fields to add into the toString method:");
+					createInterface(map, "Generate To String method", "Choose the fields to add into the toString method:",0);
+
+				} else {
+					System.out.println("There are no fields");
+				}
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+		
 	}
 
 	/* -------------------------------------------------------------------------------------------------- */
@@ -229,20 +264,141 @@ public class ButtonGenerator {
 		shell.setVisible(true);	
 	}
 
-	
-	
-	
-	
-	public void generateToString(String string) {
-		// TODO Auto-generated method stub
+	private void createToStringInterface(Multimap<String, String> map, String title, String desc) {
+		ArrayList<String> selectedFields = new ArrayList<String>();
+
+		Shell shell = new Shell();
+		shell.setText(title);
+		shell.setLayout(new RowLayout(SWT.VERTICAL));
+		shell.setSize(300, 500);
+
+		Text t = new Text(shell, SWT.SINGLE);
+		t.setBackground(shell.getBackground());
+		t.setText(desc);
+
+		Composite buttons = new Composite(shell, SWT.NONE);
+		buttons.setLayout(new RowLayout(SWT.VERTICAL));
+		buttons.setSize(300,400);
+
+		for (String key : map.keySet()) {
+			for (String value : map.get(key)) {
+				Button button = new Button(buttons, SWT.CHECK);
+				button.setText(key + " " + value);
+				button.setSize(300, 50);
+				button.setVisible(true);
+			}
+		}
+		buttons.setVisible(true);
+
+		Button submit = new Button(shell, SWT.PUSH);
+		submit.setText("Sumbit");
+
+		submit.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				selectedFields.clear();
+
+				for(Control control : buttons.getChildren()) {
+					Button button = (Button) control;
+
+					if(button.getSelection()) {
+						selectedFields.add(button.getText());
+					}
+				}
+
+				generateCode.generateConstructor(selectedFields);
+				shell.dispose();
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+
+
+		shell.setVisible(true);	
 		
 	}
-
-	
 	
 	public void userCode(String string) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public String toString() {
+		return "ButtonGenerator [javaEditor=" + javaEditor + ", generateCode=" + generateCode + ", visitor=" + visitor
+				+ ", viewArea=" + viewArea + "]";
+	}
+	
+	
+	
+	
+	private void createInterface(Multimap<String, String> map, String title, String desc, int genCode) {
+		ArrayList<String> selectedFields = new ArrayList<String>();
+
+		Shell shell = new Shell();
+		shell.setText(title);
+		shell.setLayout(new RowLayout(SWT.VERTICAL));
+		shell.setSize(300, 500);
+
+		Text t = new Text(shell, SWT.SINGLE);
+		t.setBackground(shell.getBackground());
+		t.setText(desc);
+
+		Composite buttons = new Composite(shell, SWT.NONE);
+		buttons.setLayout(new RowLayout(SWT.VERTICAL));
+		buttons.setSize(300,400);
+
+		for (String key : map.keySet()) {
+			for (String value : map.get(key)) {
+				Button button = new Button(buttons, SWT.CHECK);
+				button.setText(key + " " + value);
+				button.setSize(300, 50);
+				button.setVisible(true);
+			}
+		}
+		buttons.setVisible(true);
+
+		Button submit = new Button(shell, SWT.PUSH);
+		submit.setText("Sumbit");
+
+		submit.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				selectedFields.clear();
+
+				for(Control control : buttons.getChildren()) {
+					Button button = (Button) control;
+
+					if(button.getSelection()) {
+						selectedFields.add(button.getText());
+					}
+				}
+				
+				switch(genCode) {
+					
+					case 0:
+						generateCode.generateToString(selectedFields);
+						break;
+					case 1:
+						generateCode.generateConstructor(selectedFields);
+						break;
+					case 2:
+						generateCode.generateGettersSetters(selectedFields);
+						break;
+				}
+				shell.dispose();
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+
+
+		shell.setVisible(true);	
+	}
+	
 }
 
