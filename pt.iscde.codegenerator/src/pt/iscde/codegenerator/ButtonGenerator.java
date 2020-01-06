@@ -39,6 +39,7 @@ public class ButtonGenerator {
 		button.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				visitor.clear();
 				Multimap<String,String> map = ArrayListMultimap.create();
 				File file = javaEditor.getOpenedFile();
 				javaEditor.parseFile(file, visitor);				
@@ -50,7 +51,7 @@ public class ButtonGenerator {
 
 						map.put(type_name[0], type_name[1].substring(0, type_name[1].length()-2));
 					}
-					
+
 					createGettersSettersInterface(map);
 
 				} else {
@@ -63,17 +64,17 @@ public class ButtonGenerator {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 	}
-	
+
 	public void surroundWithTryCatch(String name) {
 		Button button = new Button(viewArea, SWT.VERTICAL);
 		button.setText(name);
 		button.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				
+
 				File file = javaEditor.getOpenedFile();
 				ITextSelection textSelected = javaEditor.getTextSelected(file);
-				
+
 				generateCode.surroundWithTryCatch(textSelected);
 
 			}
@@ -82,16 +83,17 @@ public class ButtonGenerator {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 	}
-	
+
 	public void generateConstructorUsingFields(String name) {
 		Button button = new Button(viewArea, SWT.VERTICAL);
 		button.setText(name);
 		button.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				visitor.clear();
 				Multimap<String,String> map = ArrayListMultimap.create();
 				File file = javaEditor.getOpenedFile();
-				javaEditor.parseFile(file, visitor);				
+				javaEditor.parseFile(file, visitor);
 
 				if(!visitor.getFields().isEmpty()) {
 
@@ -100,7 +102,7 @@ public class ButtonGenerator {
 
 						map.put(type_name[0], type_name[1].substring(0, type_name[1].length()-2));
 					}
-					
+
 					createConstructorInterface(map);
 
 				} else {
@@ -112,10 +114,11 @@ public class ButtonGenerator {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
-		
+
 	}
+
 	/* -------------------------------------------------------------------------------------------------- */
-	
+
 	private void createGettersSettersInterface(Multimap<String,String> map) {
 		ArrayList<String> selectedFields = new ArrayList<String>();
 
@@ -144,21 +147,21 @@ public class ButtonGenerator {
 
 		Button submit = new Button(shell, SWT.PUSH);
 		submit.setText("Sumbit");
-		
+
 		submit.addSelectionListener(new SelectionListener() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectedFields.clear();
-				
+
 				for(Control control : buttons.getChildren()) {
 					Button button = (Button) control;
-					
+
 					if(button.getSelection()) {
 						selectedFields.add(button.getText());
 					}
 				}
-				
+
 				generateCode.generateGettersSetters(selectedFields);
 				shell.dispose();
 			}
@@ -167,11 +170,10 @@ public class ButtonGenerator {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 
-		
-		shell.setVisible(true);	
-}
 
-	
+		shell.setVisible(true);	
+	}
+
 	private void createConstructorInterface(Multimap<String,String> map) {
 		ArrayList<String> selectedFields = new ArrayList<String>();
 
@@ -200,21 +202,21 @@ public class ButtonGenerator {
 
 		Button submit = new Button(shell, SWT.PUSH);
 		submit.setText("Sumbit");
-		
+
 		submit.addSelectionListener(new SelectionListener() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectedFields.clear();
-				
+
 				for(Control control : buttons.getChildren()) {
 					Button button = (Button) control;
-					
+
 					if(button.getSelection()) {
 						selectedFields.add(button.getText());
 					}
 				}
-				
+
 				generateCode.generateConstructor(selectedFields);
 				shell.dispose();
 			}
@@ -223,7 +225,7 @@ public class ButtonGenerator {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 
-		
+
 		shell.setVisible(true);	
-}
+	}
 }

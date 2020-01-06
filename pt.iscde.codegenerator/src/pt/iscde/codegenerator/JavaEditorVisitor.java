@@ -1,6 +1,7 @@
 package pt.iscde.codegenerator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
@@ -9,20 +10,22 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 public class JavaEditorVisitor extends ASTVisitor{
 
 	private ArrayList<FieldDeclaration> fields = new ArrayList<>();
-	ArrayList<String> fieldNames = new ArrayList<String>();
+	private ArrayList<String> fieldNames = new ArrayList<String>();
 	private ArrayList<MethodDeclaration> methods = new ArrayList<>();
-	ArrayList<String> methodNames = new ArrayList<String>();
+	private ArrayList<String> methodNames = new ArrayList<String>();
+	private ArrayList<String> constructorParameters = new ArrayList<String>();
 	
 	@Override
 	public boolean visit(FieldDeclaration field) {
-		fields.add(field);
+		if(!getFieldNames().contains(field.toString()))
+			fields.add(field);
 		return false;
 	}
 	
 	@Override
 	public boolean visit(MethodDeclaration method) {
-		methods.add(method);
-//		System.out.println(method.getName().toString());
+		if(method.isConstructor() || !getMethodNames().contains(method.getName().toString()))
+			methods.add(method);
 		return false;
 	}
 	
@@ -41,7 +44,6 @@ public class JavaEditorVisitor extends ASTVisitor{
 			fieldNames.add(f.toString());
 		}
 		
-		fields.clear();
 		return fieldNames;
 	}
 
@@ -52,7 +54,28 @@ public class JavaEditorVisitor extends ASTVisitor{
 			methodNames.add(m.getName().toString());
 		}
 		
-		methods.clear();
 		return methodNames;
+	}
+	
+	public ArrayList<String> getConstructorParameters() {
+		constructorParameters.clear();
+		String s = "";
+		
+		for(MethodDeclaration m: methods) {
+			if(m.isConstructor()) {
+				for(int i = 0; i < m.parameters().size(); i++) {
+					s += m.parameters().get(i).toString().split(" ")[0].toString();
+				}
+				constructorParameters.add(s);
+				s = "";
+			}
+		}
+		
+		return constructorParameters;
+	}
+	
+	public void clear() {
+		fields.clear();
+		methods.clear();
 	}
 }
