@@ -228,4 +228,21 @@ public class ButtonGenerator {
 
 		shell.setVisible(true);	
 	}
+
+	
+	
+	
+	
+	public void generateToString(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	
+	public void userCode(String string) {
+		// TODO Auto-generated method stub
+		
+	}
 }
+

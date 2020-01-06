@@ -29,10 +29,12 @@ public class CodeGeneratorView implements PidescoView {
 
 
 		viewArea.setLayout(new RowLayout(SWT.VERTICAL));
-
+		
+		buttonGenerator.userCode("User Code");
 		buttonGenerator.addGettersSetters("Add Getters/Setters");
 		buttonGenerator.surroundWithTryCatch("Surround with Try/Catch");
 		buttonGenerator.generateConstructorUsingFields("Generate Constructor using Fields");
+		buttonGenerator.generateToString("Generate toString Method");
 
 	}
 
