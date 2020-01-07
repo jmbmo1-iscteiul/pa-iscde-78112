@@ -17,17 +17,23 @@ import org.eclipse.swt.widgets.Text;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+import pt.iscde.codegenerator.ext.UserCode;
+import pt.iscde.codegenerator.services.CodeGeneratorServices;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
 
 public class ButtonGenerator {
 
 	private JavaEditorServices javaEditor;
+	private CodeGeneratorServices codeGenServices;
+	
 	private GenerateCode generateCode;
 	private JavaEditorVisitor visitor;
 	private Composite viewArea;
 
-	public ButtonGenerator(Composite viewArea, JavaEditorServices javaEditor) {
+	public ButtonGenerator(Composite viewArea, JavaEditorServices javaEditor, CodeGeneratorServices codeGenServices) {
 		this.javaEditor = javaEditor;
+		this.codeGenServices = codeGenServices;
+		
 		this.visitor = new JavaEditorVisitor();
 		this.generateCode = new GenerateCode(javaEditor, this.visitor);
 		this.viewArea = viewArea;
@@ -151,188 +157,31 @@ public class ButtonGenerator {
 		});
 		
 	}
+	
+	
+	public void generateUserCode(String name, UserCode o) {
+		Button button = new Button(viewArea, SWT.VERTICAL);
+		button.setText(name);
+		button.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				visitor.clear();
+				Multimap<String,String> map = ArrayListMultimap.create();
+				File file = javaEditor.getOpenedFile();
+				javaEditor.parseFile(file, visitor);
+				
+				javaEditor.insertTextAtCursor(o.generateCode(visitor.getFieldNames(), codeGenServices));
+				
+				
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+		
+	}
 
 	/* -------------------------------------------------------------------------------------------------- */
-
-	private void createGettersSettersInterface(Multimap<String,String> map) {
-		ArrayList<String> selectedFields = new ArrayList<String>();
-
-		Shell shell = new Shell();
-		shell.setText("Add Getters and Setters");
-		shell.setLayout(new RowLayout(SWT.VERTICAL));
-		shell.setSize(300, 500);
-
-		Text title = new Text(shell, SWT.SINGLE);
-		title.setBackground(shell.getBackground());
-		title.setText("Choose attributes to add getters/setters:");
-
-		Composite buttons = new Composite(shell, SWT.NONE);
-		buttons.setLayout(new RowLayout(SWT.VERTICAL));
-		buttons.setSize(300,400);
-
-		for (String key : map.keySet()) {
-			for (String value : map.get(key)) {
-				Button button = new Button(buttons, SWT.CHECK);
-				button.setText(key + " " + value);
-				button.setSize(300, 50);
-				button.setVisible(true);
-			}
-		}
-		buttons.setVisible(true);
-
-		Button submit = new Button(shell, SWT.PUSH);
-		submit.setText("Sumbit");
-
-		submit.addSelectionListener(new SelectionListener() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				selectedFields.clear();
-
-				for(Control control : buttons.getChildren()) {
-					Button button = (Button) control;
-
-					if(button.getSelection()) {
-						selectedFields.add(button.getText());
-					}
-				}
-
-				generateCode.generateGettersSetters(selectedFields);
-				shell.dispose();
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {}
-		});
-
-
-		shell.setVisible(true);	
-	}
-
-	private void createConstructorInterface(Multimap<String,String> map) {
-		ArrayList<String> selectedFields = new ArrayList<String>();
-
-		Shell shell = new Shell();
-		shell.setText("Generate Constructor Using Fields");
-		shell.setLayout(new RowLayout(SWT.VERTICAL));
-		shell.setSize(300, 500);
-
-		Text title = new Text(shell, SWT.SINGLE);
-		title.setBackground(shell.getBackground());
-		title.setText("Choose the fields to add into the constructor:");
-
-		Composite buttons = new Composite(shell, SWT.NONE);
-		buttons.setLayout(new RowLayout(SWT.VERTICAL));
-		buttons.setSize(300,400);
-
-		for (String key : map.keySet()) {
-			for (String value : map.get(key)) {
-				Button button = new Button(buttons, SWT.CHECK);
-				button.setText(key + " " + value);
-				button.setSize(300, 50);
-				button.setVisible(true);
-			}
-		}
-		buttons.setVisible(true);
-
-		Button submit = new Button(shell, SWT.PUSH);
-		submit.setText("Sumbit");
-
-		submit.addSelectionListener(new SelectionListener() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				selectedFields.clear();
-
-				for(Control control : buttons.getChildren()) {
-					Button button = (Button) control;
-
-					if(button.getSelection()) {
-						selectedFields.add(button.getText());
-					}
-				}
-
-				generateCode.generateConstructor(selectedFields);
-				shell.dispose();
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {}
-		});
-
-
-		shell.setVisible(true);	
-	}
-
-	private void createToStringInterface(Multimap<String, String> map, String title, String desc) {
-		ArrayList<String> selectedFields = new ArrayList<String>();
-
-		Shell shell = new Shell();
-		shell.setText(title);
-		shell.setLayout(new RowLayout(SWT.VERTICAL));
-		shell.setSize(300, 500);
-
-		Text t = new Text(shell, SWT.SINGLE);
-		t.setBackground(shell.getBackground());
-		t.setText(desc);
-
-		Composite buttons = new Composite(shell, SWT.NONE);
-		buttons.setLayout(new RowLayout(SWT.VERTICAL));
-		buttons.setSize(300,400);
-
-		for (String key : map.keySet()) {
-			for (String value : map.get(key)) {
-				Button button = new Button(buttons, SWT.CHECK);
-				button.setText(key + " " + value);
-				button.setSize(300, 50);
-				button.setVisible(true);
-			}
-		}
-		buttons.setVisible(true);
-
-		Button submit = new Button(shell, SWT.PUSH);
-		submit.setText("Sumbit");
-
-		submit.addSelectionListener(new SelectionListener() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				selectedFields.clear();
-
-				for(Control control : buttons.getChildren()) {
-					Button button = (Button) control;
-
-					if(button.getSelection()) {
-						selectedFields.add(button.getText());
-					}
-				}
-
-				generateCode.generateConstructor(selectedFields);
-				shell.dispose();
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {}
-		});
-
-
-		shell.setVisible(true);	
-		
-	}
-	
-	public void userCode(String string) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String toString() {
-		return "ButtonGenerator [javaEditor=" + javaEditor + ", generateCode=" + generateCode + ", visitor=" + visitor
-				+ ", viewArea=" + viewArea + "]";
-	}
-	
-	
-	
 	
 	private void createInterface(Multimap<String, String> map, String title, String desc, int genCode) {
 		ArrayList<String> selectedFields = new ArrayList<String>();

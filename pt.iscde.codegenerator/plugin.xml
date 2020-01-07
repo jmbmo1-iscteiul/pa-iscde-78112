@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="teste" name="Nome do Teste" schema="schema/teste.exsd"/>
+   <extension-point id="userCode" name="User Code" schema="schema/userCode.exsd"/>
    <extension
          id="id2"
          name="Code Generator"
