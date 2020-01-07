@@ -15,3 +15,4 @@ Require-Bundle: pt.iscte.pidesco;bundle-version="0.1.0",
  pt.iscte.pidesco.javaeditor;bundle-version="1.1.0",
  pt.iscte.pidesco.projectbrowser;bundle-version="0.1.0",
  com.google.guava;bundle-version="21.0.0"
+Export-Package: pt.iscde.codegenerator.ext
