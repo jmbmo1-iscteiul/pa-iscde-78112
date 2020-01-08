@@ -102,6 +102,10 @@ public class GenerateCode {
 
 
 	public void surroundWithTryCatch(ITextSelection textSelected) {
+		visitor.clear();
+		file = javaEditor.getOpenedFile();
+		javaEditor.parseFile(file, visitor);
+		
 		String code = "try {\n\t\t" + textSelected.getText().toString() +"\n\t}catch (Exception e) {\n\t\te.printStackTrace();\n\t}";
 		javaEditor.insertText(file, code, textSelected.getOffset(), textSelected.getLength());
 	}

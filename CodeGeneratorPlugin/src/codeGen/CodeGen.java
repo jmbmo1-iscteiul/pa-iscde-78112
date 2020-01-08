@@ -1,11 +1,9 @@
 package codeGen;
 
-import com.google.common.collect.Multimap;
 import java.util.List;
+import java.util.Map;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-
+import pt.iscde.codegenerator.ext.ClassInformation;
 import pt.iscde.codegenerator.ext.UserCode;
 import pt.iscde.codegenerator.services.CodeGeneratorServices;
 
@@ -13,20 +11,24 @@ import pt.iscde.codegenerator.services.CodeGeneratorServices;
 public class CodeGen implements UserCode{
 
 	@Override
-	public Multimap<String, String> userCode() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String generateCode(List<String> list, CodeGeneratorServices codeGenServices) {
-//		BundleContext context = Activator.getContext();
-//
-//		ServiceReference<CodeGeneratorServices> codeGenRef = context.getServiceReference(CodeGeneratorServices.class);
-//
-//		CodeGeneratorServices codeGenServices = context.getService(codeGenRef);
+	public String generateCode(ClassInformation editor, CodeGeneratorServices codeGenServices) {
+		String className = editor.getClassName();
+		Map<String,String> map = editor.getfieldNameType();
+		String code = "@Override\npublic boolean equals(Object obj) {\n\tif (this == obj)\n\t\t return true;\n\tif (obj == null)\n\t\t return false;"
+				+ "\n\tif (getClass() != obj.getClass())\n\t\treturn false;\n\t"
+				+ className + " other = (" + className + ") obj;\n\t";
 		
-		return codeGenServices.gettersSetters();
+		for(String field: map.keySet())
+			if (map.get(field).equals("int"))
+				code += "if (" + field + " != other." + field + ")\n\t\treturn false;\n\t";
+		
+		code += "return true;\n}";
+		
+//		return code;
+		
+		List<String> teste = editor.getFields();
+//		teste.clear();
+		return codeGenServices.surroundWithTryCatch("oioioi");
 	}
 
 }

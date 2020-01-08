@@ -9,7 +9,11 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.*;
 import org.osgi.framework.BundleContext;
@@ -37,10 +41,10 @@ public class CodeGeneratorView implements PidescoView {
 		CodeGeneratorServices codeGenServices = context.getService(codeGenRef);
 
 		
+		viewArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+		viewArea.setLayout(new GridLayout());
+		
 		ButtonGenerator buttonGenerator = new ButtonGenerator(viewArea, javaEditor, codeGenServices);
-
-
-		viewArea.setLayout(new RowLayout(SWT.VERTICAL));
 
 		buttonGenerator.addGettersSetters("Add Getters/Setters");
 		buttonGenerator.surroundWithTryCatch("Surround with Try/Catch");

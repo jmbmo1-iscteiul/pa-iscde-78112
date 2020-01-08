@@ -7,16 +7,22 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+import pt.iscde.codegenerator.ext.ClassInformation;
 import pt.iscde.codegenerator.ext.UserCode;
 import pt.iscde.codegenerator.services.CodeGeneratorServices;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
@@ -29,6 +35,7 @@ public class ButtonGenerator {
 	private GenerateCode generateCode;
 	private JavaEditorVisitor visitor;
 	private Composite viewArea;
+	private ClassInformation editor;
 
 	public ButtonGenerator(Composite viewArea, JavaEditorServices javaEditor, CodeGeneratorServices codeGenServices) {
 		this.javaEditor = javaEditor;
@@ -42,6 +49,8 @@ public class ButtonGenerator {
 	public void addGettersSetters(String name) {
 		Button button = new Button(viewArea, SWT.VERTICAL);
 		button.setText(name);
+		button.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		button.setSize(300, 100);
 		button.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -75,6 +84,7 @@ public class ButtonGenerator {
 	public void surroundWithTryCatch(String name) {
 		Button button = new Button(viewArea, SWT.VERTICAL);
 		button.setText(name);
+		button.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		button.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -94,6 +104,7 @@ public class ButtonGenerator {
 	public void generateConstructorUsingFields(String name) {
 		Button button = new Button(viewArea, SWT.VERTICAL);
 		button.setText(name);
+		button.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		button.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -128,6 +139,7 @@ public class ButtonGenerator {
 	public void generateToString(String name) {
 		Button button = new Button(viewArea, SWT.VERTICAL);
 		button.setText(name);
+		button.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		button.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -157,21 +169,20 @@ public class ButtonGenerator {
 		});
 		
 	}
-	
-	
+		
 	public void generateUserCode(String name, UserCode o) {
 		Button button = new Button(viewArea, SWT.VERTICAL);
 		button.setText(name);
+		button.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		button.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				visitor.clear();
-				Multimap<String,String> map = ArrayListMultimap.create();
 				File file = javaEditor.getOpenedFile();
 				javaEditor.parseFile(file, visitor);
+				editor = new ClassInformation(visitor.getFields(), visitor.getMethods(),file);
 				
-				javaEditor.insertTextAtCursor(o.generateCode(visitor.getFieldNames(), codeGenServices));
-				
+				javaEditor.insertTextAtCursor(o.generateCode(editor, codeGenServices));
 				
 			}
 
@@ -185,11 +196,14 @@ public class ButtonGenerator {
 	
 	private void createInterface(Multimap<String, String> map, String title, String desc, int genCode) {
 		ArrayList<String> selectedFields = new ArrayList<String>();
-
 		Shell shell = new Shell();
 		shell.setText(title);
-		shell.setLayout(new RowLayout(SWT.VERTICAL));
-		shell.setSize(300, 500);
+		shell.setLayout(new GridLayout(1, false));
+		
+		Rectangle screenSize = shell.getDisplay().getPrimaryMonitor().getBounds();
+		shell.setLocation((screenSize.width - shell.getBounds().width) / 2, (screenSize.height - shell.getBounds().height) / 2);
+		shell.setSize(300, 300);
+		
 
 		Text t = new Text(shell, SWT.SINGLE);
 		t.setBackground(shell.getBackground());
@@ -211,6 +225,7 @@ public class ButtonGenerator {
 
 		Button submit = new Button(shell, SWT.PUSH);
 		submit.setText("Sumbit");
+		submit.setLayoutData(new GridData(SWT.CENTER, SWT.BOTTOM, false, false));
 
 		submit.addSelectionListener(new SelectionListener() {
 
@@ -245,7 +260,7 @@ public class ButtonGenerator {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 
-
+		shell.pack();
 		shell.setVisible(true);	
 	}
 	
