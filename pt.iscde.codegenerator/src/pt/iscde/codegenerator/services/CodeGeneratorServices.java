@@ -7,6 +7,10 @@ public interface CodeGeneratorServices {
 
 	String gettersSetters(Map<String,String> fields);
 	
+	String getter(Map<String,String> fields);
+	
+	String setter(Map<String,String> fields);
+	
 	String surroundWithTryCatch();
 	
 	String generateConstructor(Map<String,String> fields);

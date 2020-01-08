@@ -41,16 +41,71 @@ public class CodeGeneratorServicesImpl implements CodeGeneratorServices {
 					setMethodCode += "\tpublic void " + setMethodName + "(" + fieldType + " " + fieldName +") { \n \t\tthis."+ fieldName + " = " + fieldName + "; \n \t}\n\n";
 				}
 
-
 			}
-			
-			code = getMethodCode + setMethodCode;
-			return code;
 		} 
 
-		return "";
+		return getMethodCode + setMethodCode;
 	}
 
+	@Override
+	public String getter(Map<String, String> fields) {
+		JavaEditorServices javaEditor = Activator.getActivator().getJavaEditor();
+		JavaEditorVisitor visitor = new JavaEditorVisitor();
+		visitor.clear();
+		File file = javaEditor.getOpenedFile();
+		javaEditor.parseFile(file, visitor);
+		
+		String fieldName, fieldType;
+		String getMethodCode = "";
+
+		if(!fields.isEmpty()) {
+			for(String s: fields.keySet()) {
+
+				fieldType = fields.get(s);
+				fieldName = s;
+
+
+				String getMethodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+
+				if(!visitor.getMethodNames().contains(getMethodName)) {
+					getMethodCode +=  "public " + fieldType + " " + getMethodName + "() { \n \t\treturn this."+ fieldName + "; \n \t}\n\n";
+				}
+
+			}
+		}
+		
+		return getMethodCode;
+	}
+
+	@Override
+	public String setter(Map<String, String> fields) {
+		JavaEditorServices javaEditor = Activator.getActivator().getJavaEditor();
+		JavaEditorVisitor visitor = new JavaEditorVisitor();
+		visitor.clear();
+		File file = javaEditor.getOpenedFile();
+		javaEditor.parseFile(file, visitor);
+		
+		String fieldName, fieldType;
+		String setMethodCode = "";
+
+		if(!fields.isEmpty()) {
+			for(String s: fields.keySet()) {
+
+				fieldType = fields.get(s);
+				fieldName = s;
+
+
+				String setMethodName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+
+				if(!visitor.getMethodNames().contains(setMethodName)) {
+					setMethodCode += "\tpublic void " + setMethodName + "(" + fieldType + " " + fieldName +") { \n \t\tthis."+ fieldName + " = " + fieldName + "; \n \t}\n\n";
+				}
+			}
+		}
+		
+		return setMethodCode;
+	}
+	
 	@Override
 	public String surroundWithTryCatch() {
 		JavaEditorServices javaEditor = Activator.getActivator().getJavaEditor();
@@ -177,4 +232,5 @@ public class CodeGeneratorServicesImpl implements CodeGeneratorServices {
 			return code;
 		return "";
 	}
+
 }

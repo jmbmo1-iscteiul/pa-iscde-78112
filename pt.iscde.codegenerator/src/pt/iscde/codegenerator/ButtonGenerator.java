@@ -79,6 +79,78 @@ public class ButtonGenerator {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 	}
+	
+	public void addGetter(String name) {
+		Button button = new Button(viewArea, SWT.VERTICAL);
+		button.setText(name);
+		button.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		button.setSize(300, 100);
+		button.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				visitor.clear();
+				Multimap<String,String> map = ArrayListMultimap.create();
+				File file = javaEditor.getOpenedFile();
+				javaEditor.parseFile(file, visitor);				
+
+				if(!visitor.getFields().isEmpty()) {
+
+					for(String s: visitor.getFieldNames()) {
+						String[] type_name = s.split(" ");
+
+						map.put(type_name[0], type_name[1].substring(0, type_name[1].length()-2));
+					}
+
+					createInterface(map, "Add Getters", "Choose attributes to add getters",3);
+
+				} else {
+					System.out.println("There are no fields");
+					
+				}
+			}
+
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+		
+	}
+
+	public void addSetter(String name) {
+		Button button = new Button(viewArea, SWT.VERTICAL);
+		button.setText(name);
+		button.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		button.setSize(300, 100);
+		button.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				visitor.clear();
+				Multimap<String,String> map = ArrayListMultimap.create();
+				File file = javaEditor.getOpenedFile();
+				javaEditor.parseFile(file, visitor);				
+
+				if(!visitor.getFields().isEmpty()) {
+
+					for(String s: visitor.getFieldNames()) {
+						String[] type_name = s.split(" ");
+
+						map.put(type_name[0], type_name[1].substring(0, type_name[1].length()-2));
+					}
+
+					createInterface(map, "Add Setters", "Choose attributes to add setters:",4);
+
+				} else {
+					System.out.println("There are no fields");
+					
+				}
+			}
+
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+		
+	}
 
 	public void surroundWithTryCatch(String name) {
 		Button button = new Button(viewArea, SWT.VERTICAL);
@@ -250,6 +322,12 @@ public class ButtonGenerator {
 					case 2:
 						generateCode.generateGettersSetters(selectedFields);
 						break;
+					case 3:
+						generateCode.generateGetters(selectedFields);
+						break;
+					case 4:
+						generateCode.generateSetters(selectedFields);
+						break;
 				}
 				shell.dispose();
 			}
@@ -261,6 +339,8 @@ public class ButtonGenerator {
 		shell.pack();
 		shell.setVisible(true);	
 	}
+
+	
 	
 }
 

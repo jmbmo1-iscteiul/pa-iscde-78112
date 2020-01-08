@@ -47,6 +47,8 @@ public class CodeGeneratorView implements PidescoView {
 		ButtonGenerator buttonGenerator = new ButtonGenerator(viewArea, javaEditor, codeGenServices);
 
 		buttonGenerator.addGettersSetters("Add Getters/Setters");
+		buttonGenerator.addGetter("Add Getters");
+		buttonGenerator.addSetter("Add Setters");
 		buttonGenerator.surroundWithTryCatch("Surround with Try/Catch");
 		buttonGenerator.generateConstructorUsingFields("Generate Constructor using Fields");
 		buttonGenerator.generateToString("Generate toString Method");
