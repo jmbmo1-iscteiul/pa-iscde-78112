@@ -28,7 +28,7 @@ public class CodeGen implements UserCode{
 		
 		List<String> teste = editor.getFields();
 //		teste.clear();
-		return codeGenServices.surroundWithTryCatch("oioioi");
+		return codeGenServices.addMethod("nomeFuncao", "String", "protected", editor.getfieldNameType());
 	}
 
 }

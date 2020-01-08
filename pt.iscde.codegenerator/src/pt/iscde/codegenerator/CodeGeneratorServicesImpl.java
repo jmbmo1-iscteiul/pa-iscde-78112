@@ -13,7 +13,7 @@ import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
 public class CodeGeneratorServicesImpl implements CodeGeneratorServices {
 
 	@Override
-	public String gettersSetters(Map<String,String> fields, String filePath) {
+	public String gettersSetters(Map<String,String> fields) {
 		JavaEditorServices javaEditor = Activator.getActivator().getJavaEditor();
 		JavaEditorVisitor visitor = new JavaEditorVisitor();
 		visitor.clear();
@@ -54,7 +54,7 @@ public class CodeGeneratorServicesImpl implements CodeGeneratorServices {
 	}
 
 	@Override
-	public String surroundWithTryCatch(String filePath) {
+	public String surroundWithTryCatch() {
 		JavaEditorServices javaEditor = Activator.getActivator().getJavaEditor();
 		File file = javaEditor.getOpenedFile();
 		
@@ -66,7 +66,7 @@ public class CodeGeneratorServicesImpl implements CodeGeneratorServices {
 	}
 
 	@Override
-	public String generateConstructor(Map<String,String> fields, String filePath) {
+	public String generateConstructor(Map<String,String> fields) {
 		JavaEditorServices javaEditor = Activator.getActivator().getJavaEditor();
 		JavaEditorVisitor visitor = new JavaEditorVisitor();
 		visitor.clear();
@@ -106,7 +106,7 @@ public class CodeGeneratorServicesImpl implements CodeGeneratorServices {
 	}
 
 	@Override
-	public String generateToString(List<String> fields, String filePath) {
+	public String generateToString(List<String> fields) {
 		JavaEditorServices javaEditor = Activator.getActivator().getJavaEditor();
 		JavaEditorVisitor visitor = new JavaEditorVisitor();
 		visitor.clear();
@@ -150,4 +150,35 @@ public class CodeGeneratorServicesImpl implements CodeGeneratorServices {
 		}
 	}
 
+	public String addMethod(String methodName, String returnType, String privacyModifier, Map<String,String> parameters) {
+		JavaEditorServices javaEditor = Activator.getActivator().getJavaEditor();
+		JavaEditorVisitor visitor = new JavaEditorVisitor();
+		visitor.clear();
+		File file = javaEditor.getOpenedFile();
+		javaEditor.parseFile(file, visitor);
+		boolean exists = false;
+		
+		String par = "";
+		for(String s: parameters.keySet()) {
+			par += parameters.get(s) + " " + s + ", ";
+		}
+		par = par.substring(0, par.length()-3);	
+		
+		String code = privacyModifier + " " + returnType + " " + methodName + "(" + par + ") {\n\n\t";
+		
+		if(returnType.equals("void")) {
+			code += "return;\n}" ;
+		}else {
+			code += "return null;\n}";
+		}
+		
+		for(String method: visitor.getMethodNames()) {
+			if(method.equals(methodName))
+				exists = true;
+		}
+		
+		if(!exists)
+			return code;
+		return "";
+	}
 }
