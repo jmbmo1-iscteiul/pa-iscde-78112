@@ -46,9 +46,7 @@ public class CodeGeneratorServicesImpl implements CodeGeneratorServices {
 			
 			code = getMethodCode + setMethodCode;
 			return code;
-		} else {
-			System.out.println("Lista Vazia");
-		}
+		} 
 
 		return "";
 	}
@@ -97,9 +95,7 @@ public class CodeGeneratorServicesImpl implements CodeGeneratorServices {
 			if(!exists)
 				return code;
 
-		} else {
-			System.out.println("Lista Vazia");
-		}
+		} 
 		
 		// FALTA RETORNAR CONSTRUTOR VAZIO
 		return "";
@@ -167,7 +163,7 @@ public class CodeGeneratorServicesImpl implements CodeGeneratorServices {
 		String code = privacyModifier + " " + returnType + " " + methodName + "(" + par + ") {\n\n\t";
 		
 		if(returnType.equals("void")) {
-			code += "return;\n}" ;
+			code += "return;\n}";
 		}else {
 			code += "return null;\n}";
 		}

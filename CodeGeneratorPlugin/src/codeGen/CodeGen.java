@@ -1,6 +1,5 @@
 package codeGen;
 
-import java.util.List;
 import java.util.Map;
 
 import pt.iscde.codegenerator.ext.ClassInformation;
@@ -24,11 +23,7 @@ public class CodeGen implements UserCode{
 		
 		code += "return true;\n}";
 		
-//		return code;
-		
-		List<String> teste = editor.getFields();
-//		teste.clear();
-		return codeGenServices.addMethod("nomeFuncao", "String", "protected", editor.getfieldNameType());
+		return code;
 	}
 
 }

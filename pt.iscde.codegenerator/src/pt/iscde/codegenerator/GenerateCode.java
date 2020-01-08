@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 import org.eclipse.jface.text.ITextSelection;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 
 import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
 
@@ -23,6 +26,7 @@ public class GenerateCode {
 	public void generateGettersSetters(ArrayList<String> selectedFields) {
 		visitor.clear();
 		file = javaEditor.getOpenedFile();
+		javaEditor.saveFile(file);
 		javaEditor.parseFile(file, visitor);
 		String fieldName, fieldType;
 
@@ -52,16 +56,17 @@ public class GenerateCode {
 				javaEditor.saveFile(file);
 			}
 		} else {
+			
 			System.out.println("Lista Vazia");
 		}
 	}
 
-
 	public void generateConstructor(ArrayList<String> selectedFields) {
 		visitor.clear();
 		file = javaEditor.getOpenedFile();
+		javaEditor.saveFile(file);
 		javaEditor.parseFile(file, visitor);
-		String fieldName, fieldType, top, bottom = "", code, className, aux = "";
+		String fieldName, fieldType, top, bottom = "", code = "", className, aux = "";
 		
 		boolean exists = false;
 		className = file.getName().replace(".java", "");
@@ -81,29 +86,28 @@ public class GenerateCode {
 			ArrayList<String> constructorParameters = visitor.getConstructorParameters();
 			
 			for(String s: constructorParameters) {
-				System.out.println("parameters: " + s);
-				System.out.println("aux: " + aux);
 				if(s.equals(aux)) {
 					exists = true;
 				}
 			}
-			
-
-			if(!exists)
-				javaEditor.insertTextAtCursor(code);
-				javaEditor.saveFile(file);
 
 		} else {
-			System.out.println("Lista Vazia");
+			code = "public " + className + "(" + top + "){\n\t\t\n}";
 		}
-
+		
+		if(!exists) {
+			javaEditor.insertTextAtCursor(code);
+			javaEditor.saveFile(file);
+			
+		} else {
+			generateErrorMessage("A constructor with the same argument types already exists");
+		}
 	}
-
-
 
 	public void surroundWithTryCatch(ITextSelection textSelected) {
 		visitor.clear();
 		file = javaEditor.getOpenedFile();
+		javaEditor.saveFile(file);
 		javaEditor.parseFile(file, visitor);
 		
 		String code = "try {\n\t\t" + textSelected.getText().toString() +"\n\t}catch (Exception e) {\n\t\te.printStackTrace();\n\t}";
@@ -113,8 +117,9 @@ public class GenerateCode {
 	public void generateToString(ArrayList<String> selectedFields) {
 		visitor.clear();
 		file = javaEditor.getOpenedFile();
+		javaEditor.saveFile(file);
 		javaEditor.parseFile(file, visitor);
-		String fieldName, className, s1, s2 = "", s3, code, functionCode;
+		String fieldName, className, s1, s2 = "", s3, code, functionCode = "";
 		boolean exists = false;
 		
 		className = file.getName().replace(".java", "");
@@ -135,20 +140,41 @@ public class GenerateCode {
 			
 			functionCode = "@Override\n" + "public String toString() {\n\t" + "return " + code + "\n}\n";
 			
-			for(String method: visitor.getMethodNames()) {
-				if(method.equals("toString"))
-					exists = true;
-			}
-			if(!exists)
-				javaEditor.insertTextAtCursor(functionCode);
-				javaEditor.saveFile(file);
+//			for(String method: visitor.getMethodNames()) {
+//				if(method.equals("toString"))
+//					exists = true;
+//			}
+//			if(!exists)
+//				javaEditor.insertTextAtCursor(functionCode);
+//				javaEditor.saveFile(file);
 
 		} else {
-			System.out.println("Lista Vazia");
+			functionCode = "@Override\n" + "public String toString() {\n\t" + "return \"" + className + " []\";\n}\n";
+		}
+		
+		for(String method: visitor.getMethodNames()) {
+			if(method.equals("toString"))
+				exists = true;
+		}
+		
+		if(!exists) {
+			javaEditor.insertTextAtCursor(functionCode);
+			javaEditor.saveFile(file);
+		} else {
+			generateErrorMessage("A To String method already exists.");
 		}
 
 	}
 
 
+	
+	
+	private void generateErrorMessage(String message) {
+		Shell s = new Shell();
+		MessageBox messageBox = new MessageBox(s, SWT.ICON_ERROR);
+		messageBox.setText("Error Message");
+		messageBox.setMessage(message);
+		messageBox.open();
+	}
 
 }

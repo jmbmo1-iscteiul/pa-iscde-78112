@@ -14,8 +14,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Monitor;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -67,11 +66,11 @@ public class ButtonGenerator {
 						map.put(type_name[0], type_name[1].substring(0, type_name[1].length()-2));
 					}
 
-//					createGettersSettersInterface(map);
 					createInterface(map, "Add Getters and Setters", "Choose attributes to add getters/setters:",2);
 
 				} else {
 					System.out.println("There are no fields");
+					
 				}
 			}
 
@@ -125,7 +124,7 @@ public class ButtonGenerator {
 					createInterface(map, "Generate Constructor Using Fields", "Choose the fields to add into the constructor:",1);
 
 				} else {
-					System.out.println("There are no fields");
+					generateCode.generateConstructor(new ArrayList<String>());
 				}
 			}
 
@@ -156,7 +155,6 @@ public class ButtonGenerator {
 						map.put(type_name[0], type_name[1].substring(0, type_name[1].length()-2));
 					}
 					
-//					createToStringInterface(map, "Generate To String method", "Choose the fields to add into the toString method:");
 					createInterface(map, "Generate To String method", "Choose the fields to add into the toString method:",0);
 
 				} else {
@@ -259,7 +257,7 @@ public class ButtonGenerator {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
-
+		
 		shell.pack();
 		shell.setVisible(true);	
 	}
