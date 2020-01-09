@@ -1,4 +1,4 @@
-package codeGen;
+package pt.iscde.codegenerator.internal;
 
 import java.util.Map;
 

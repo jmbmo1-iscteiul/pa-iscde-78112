@@ -1,4 +1,4 @@
-package codeGen;
+package pt.iscde.codegenerator.internal;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
