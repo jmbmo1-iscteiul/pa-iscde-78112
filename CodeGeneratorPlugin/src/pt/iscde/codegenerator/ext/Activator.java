@@ -8,7 +8,7 @@ public class Activator implements BundleActivator {
 	private static BundleContext context;
 
 	static BundleContext getContext() {
-		return context;
+		return context ;
 	}
 
 	public void start(BundleContext bundleContext) throws Exception {
