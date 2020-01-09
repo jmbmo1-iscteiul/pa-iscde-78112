@@ -2,9 +2,7 @@ package pt.iscde.codegenerator.internal;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.swt.SWT;

@@ -2,9 +2,6 @@ package pt.iscde.codegenerator.ext;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-
-import pt.iscde.codegenerator.services.CodeGeneratorServices;
 
 public class Activator implements BundleActivator {
 
