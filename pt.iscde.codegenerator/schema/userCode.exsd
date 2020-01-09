@@ -54,7 +54,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":pt.iscde.codegenerator.ext.UserCode"/>
+                  <meta.attribute kind="java" basedOn=":pt.iscde.codegenerator.extensibility.UserCode"/>
                </appinfo>
             </annotation>
          </attribute>

@@ -4,7 +4,7 @@
    <extension
          point="pt.iscde.codegenerator.userCode">
       <userCode
-            class="codeGen.CodeGen"
+            class="pt.iscde.codegenerator.ext.CodeGen"
             buttonText="Equals Method">
       </userCode>
         

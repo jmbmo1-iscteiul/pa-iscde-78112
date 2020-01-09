@@ -1,4 +1,4 @@
-package pt.iscde.codegenerator.internal;
+package pt.iscde.codegenerator.ext;
 
 import java.util.Map;
 
