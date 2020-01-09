@@ -1,4 +1,4 @@
-package pt.iscde.codegenerator;
+package pt.iscde.codegenerator.internal;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,8 +21,8 @@ import org.eclipse.swt.widgets.Text;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-import pt.iscde.codegenerator.ext.ClassInformation;
-import pt.iscde.codegenerator.ext.UserCode;
+import pt.iscde.codegenerator.extensibility.ClassInformation;
+import pt.iscde.codegenerator.extensibility.UserCode;
 import pt.iscde.codegenerator.services.CodeGeneratorServices;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
 

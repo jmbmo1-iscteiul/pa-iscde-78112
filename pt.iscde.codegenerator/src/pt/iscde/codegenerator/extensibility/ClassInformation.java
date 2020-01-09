@@ -1,4 +1,4 @@
-package pt.iscde.codegenerator.ext;
+package pt.iscde.codegenerator.extensibility;
 
 import java.io.File;
 import java.util.ArrayList;

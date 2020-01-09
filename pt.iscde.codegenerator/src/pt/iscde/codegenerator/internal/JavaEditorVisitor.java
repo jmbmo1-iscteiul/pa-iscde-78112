@@ -1,4 +1,4 @@
-package pt.iscde.codegenerator;
+package pt.iscde.codegenerator.internal;
 
 import java.util.ArrayList;
 

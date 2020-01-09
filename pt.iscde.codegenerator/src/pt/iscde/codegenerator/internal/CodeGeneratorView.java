@@ -1,4 +1,4 @@
-package pt.iscde.codegenerator;
+package pt.iscde.codegenerator.internal;
 
 import java.util.Map;
 
@@ -19,11 +19,11 @@ import org.eclipse.swt.widgets.*;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
-import pt.iscde.codegenerator.ext.UserCode;
+import pt.iscde.codegenerator.extensibility.UserCode;
+import pt.iscde.codegenerator.internal.Activator;
 import pt.iscde.codegenerator.services.CodeGeneratorServices;
 import pt.iscte.pidesco.extensibility.PidescoView;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
-import pt.iscde.codegenerator.Activator;
 
 public class CodeGeneratorView implements PidescoView {
 

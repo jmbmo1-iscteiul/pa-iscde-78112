@@ -2,8 +2,8 @@ package codeGen;
 
 import java.util.Map;
 
-import pt.iscde.codegenerator.ext.ClassInformation;
-import pt.iscde.codegenerator.ext.UserCode;
+import pt.iscde.codegenerator.extensibility.ClassInformation;
+import pt.iscde.codegenerator.extensibility.UserCode;
 import pt.iscde.codegenerator.services.CodeGeneratorServices;
 
 

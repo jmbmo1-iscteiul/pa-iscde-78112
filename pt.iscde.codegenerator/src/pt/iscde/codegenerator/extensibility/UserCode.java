@@ -1,4 +1,4 @@
-package pt.iscde.codegenerator.ext;
+package pt.iscde.codegenerator.extensibility;
 
 import pt.iscde.codegenerator.services.CodeGeneratorServices;
 
