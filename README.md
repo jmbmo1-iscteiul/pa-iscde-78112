@@ -11,4 +11,6 @@ This plug-in provides services that will make the work easier when generating co
 [Learn more about the Plug-in Services](https://github.com/jmbmo1-iscteiul/pa-iscde-78112/wiki/Code-Generator-Services)
 
 ## Extensions
+The user is also allowed to extend this component with other plug-ins, thus adding new enhanced features in their own way.
+
 [Learn more about the Plug-in Extensions](https://github.com/jmbmo1-iscteiul/pa-iscde-78112/wiki/Code-Generator-Extensions)
