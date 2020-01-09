@@ -6,6 +6,8 @@ This Code Generation component is a contribuition to ISCDE. Its purpose is to ge
 [Learn more about the Plug-in Operations](https://github.com/jmbmo1-iscteiul/pa-iscde-78112/wiki/Code-Generator-Operation)
 
 ## Services
+This plug-in provides services that will make the work easier when generating code. It allows the user to access the names and types of fields, the name of the class, methods, among others.
+
 [Learn more about the Plug-in Services](https://github.com/jmbmo1-iscteiul/pa-iscde-78112/wiki/Code-Generator-Services)
 
 ## Extensions
